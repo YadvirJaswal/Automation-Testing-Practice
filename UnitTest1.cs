@@ -573,5 +573,26 @@ namespace AutomationPracticeSiteProject
             //Assert Error Message
             loginPage.ValiadateErrorMessage_InvalidCredentials("Error: The password you entered for the username SuMit@gmail.com is incorrect. Lost your password?");
         }
+        [Theory]
+        [InlineData("sumit@gmail.com", "Sumit@001")]
+        public void ClickOnMyAccount_Login_Logout_PressBackButton_ShouldNotBeSignedIn(string userName, string password)
+        {
+            // Click on My Account option in the menu
+            commonFeatures.ClickMyAccountMenu();
+
+            // Enter And Submit Login form
+            loginPage.Enter_UserName_Password_ClickOnLogin(userName, password);
+
+            // Assert Navigation
+            registrationPage.ValidateNavigationToMyAccountPage();
+
+            // Click on Logout Button
+            loginPage.ClickOnLogoutButton();
+
+            // Press Back button
+            driver.Navigate().Back();
+
+            loginPage.Verify_UserIsNot_SignedInAgain();
+        }
     }
 }

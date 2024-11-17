@@ -1,5 +1,6 @@
 ﻿
 
+using System.Linq;
 using AutomationPracticeSiteProject.Models;
 using OpenQA.Selenium;
 
@@ -47,6 +48,17 @@ namespace AutomationPracticeSiteProject.Pages
             var fieldType = passwordField.GetAttribute("type");
             // type of password should be 'password'
             Assert.Equal("password",fieldType);
+        }
+        public void ClickOnLogoutButton()
+        {
+            // Locate and click on Logout button
+            var logOutButton = driver.FindElement(By.LinkText("Logout"));
+            logOutButton.Click();
+        }
+        public void Verify_UserIsNot_SignedInAgain()
+        {
+            var isLoginFormDisplayed = driver.FindElement(By.ClassName("login")).Displayed;
+            Assert.True(isLoginFormDisplayed);
         }
     }
 }
