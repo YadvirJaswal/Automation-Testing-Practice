@@ -21,6 +21,7 @@ namespace AutomationPracticeSiteProject
         private CheckOutPage checkOutPage;
         private CommonFeatures commonFeatures;
         private RegistrationPage registrationPage;
+        private ShopPage shopPage;
         private LoginPage loginPage;
         private readonly ITestOutputHelper _testOutputHelper;
         public UnitTest1(ITestOutputHelper testOutputHelper)
@@ -35,6 +36,7 @@ namespace AutomationPracticeSiteProject
             checkOutPage = new CheckOutPage(driver);
             registrationPage = new RegistrationPage(driver);
             loginPage = new LoginPage(driver);
+            shopPage = new ShopPage(driver,_testOutputHelper);
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         }
 
@@ -573,5 +575,21 @@ namespace AutomationPracticeSiteProject
             //Assert Error Message
             loginPage.ValiadateErrorMessage_InvalidCredentials("Error: The password you entered for the username SuMit@gmail.com is incorrect. Lost your password?");
         }
+        [Fact]
+        public void Shop_Validate_FliterByPrice_Functionality()
+        {
+            // Click on shop
+            commonFeatures.ClickShopMenu();
+
+            // Adjust the price slider between 150-450
+            shopPage.MoveSliderLeft_VerifyPostion();
+
+            // Click on Filter Button and assert prices after applying filter
+            shopPage.ClickOnFilterButton_AssertPrices();
+            
+            // Assert the price of each book on the page
+            shopPage.ValidatePricesOfBook_AfterFilter();
+        }
+
     }
 }
