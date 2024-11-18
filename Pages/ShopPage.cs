@@ -182,7 +182,6 @@ namespace AutomationPracticeSiteProject.Pages
         }
         public void Validate_LowToHigh_Sorting_Functionality()
         {
-
             // Get all the li elements within the ul
             var productItems = GetListOfProducts();
 
