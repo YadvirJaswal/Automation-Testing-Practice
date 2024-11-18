@@ -37,11 +37,11 @@ namespace AutomationPracticeSiteProject.Pages
             testOutputHelper.WriteLine(sliderWidth.ToString());
             // Calculate offset to move to 85.7143 %
             var moveByOffset = -(int)(sliderWidth * 0.148571);
-            
+
 
             // Move the right handle
             var actions = new Actions(driver);
-            actions.ClickAndHold(rightHandle).MoveByOffset(moveByOffset,0).Release().Perform();
+            actions.ClickAndHold(rightHandle).MoveByOffset(moveByOffset, 0).Release().Perform();
 
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
@@ -62,7 +62,7 @@ namespace AutomationPracticeSiteProject.Pages
             var minPrice = driver.FindElement(By.Id("min_price")).GetAttribute("value");
             Assert.Equal("150", minPrice);
             var maxPrices = driver.FindElement(By.Id("max_price")).GetAttribute("value");
-            Assert.Equal("450",maxPrices);
+            Assert.Equal("450", maxPrices);
         }
         public void ValidatePricesOfBook_AfterFilter()
         {
@@ -70,7 +70,7 @@ namespace AutomationPracticeSiteProject.Pages
             var ulElement = driver.FindElement(By.ClassName("masonry-done"));
             // Locate all the lists in ul
             var lis = ulElement.FindElements(By.TagName("li"));
-            
+
             foreach (var li in lis)
             {
                 var priceOfBookElement = li.FindElement(By.ClassName("price"));
@@ -135,7 +135,7 @@ namespace AutomationPracticeSiteProject.Pages
             // Re-locate the dropdown to avoid stale element
             var refreshedDropDownElement = driver.FindElement(By.ClassName("orderby"));
             var refreshedDropDown = new SelectElement(refreshedDropDownElement);
-           
+
             // Assert the selected option
             var actualOption = refreshedDropDown.SelectedOption.GetDomAttribute("value");
             Assert.Equal(value, actualOption);
@@ -150,7 +150,7 @@ namespace AutomationPracticeSiteProject.Pages
         }
         private IWebElement GetProductPrices(IWebElement item)
         {
-            
+
             // Locate the price element within each li
             var priceElement = item.FindElement(By.ClassName("woocommerce-Price-amount"));
             return priceElement;
@@ -192,8 +192,24 @@ namespace AutomationPracticeSiteProject.Pages
             List<double> sortedPrices = new List<double>(prices);
             sortedPrices.Sort(); // Sort the copied list in ascending order
             // Assert that the original list matches the sorted list
-            Assert.Equal(sortedPrices,prices);
+            Assert.Equal(sortedPrices, prices);
         }
+        public void Validate_HighToLow_Sorting_Functionality()
+        {
+            // Get all the li elements within the ul
+            var productItems = GetListOfProducts();
 
+            // Extract prices from each li
+            var prices = GetListOfPrices(productItems);
+
+            // Verify that the prices list is sorted in ascending order
+            List<double> sortedPrices = new List<double>(prices);
+            // Sort the copied list in ascending order
+            sortedPrices.Sort(); 
+            // Reverse it to get descending order
+            sortedPrices.Reverse();
+            // Assert that the original list matches the sorted list
+            Assert.Equal(sortedPrices, prices);
+        }
     }
 }

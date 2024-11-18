@@ -626,9 +626,23 @@ namespace AutomationPracticeSiteProject
             // Click on shop
             commonFeatures.ClickShopMenu();
 
+            // Select the option from dropdown
             shopPage.SelectOption_Sorting_DropDown("price");
 
+            // Validate the products List on the webpage is displayed in ascending order of price.
             shopPage.Validate_LowToHigh_Sorting_Functionality();
+        }
+        [Fact]
+        public void Shop_DefaultSorting_HighToLow()
+        {
+            // Click on shop
+            commonFeatures.ClickShopMenu();
+
+            // Select the option from dropdown
+            shopPage.SelectOption_Sorting_DropDown("price-desc");
+
+            // Validate the products List on the webpage is displayed in descending order of price.
+            shopPage.Validate_HighToLow_Sorting_Functionality();
         }
 
     }
