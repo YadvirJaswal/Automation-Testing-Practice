@@ -620,6 +620,16 @@ namespace AutomationPracticeSiteProject
             // Click on the category and verify that user can view only that particular product
             shopPage.ClickOnCategory_VerifyBooksDisplayedOnPage(2);
         }
+        [Fact]
+        public void Shop_DefaultSorting_LowToHigh()
+        {
+            // Click on shop
+            commonFeatures.ClickShopMenu();
+
+            shopPage.SelectOption_Sorting_DropDown("price");
+
+            shopPage.Validate_LowToHigh_Sorting_Functionality();
+        }
 
     }
 }
