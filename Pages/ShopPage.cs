@@ -89,5 +89,40 @@ namespace AutomationPracticeSiteProject.Pages
                 }
             }
         }
+        private List<IWebElement> GetProductCategoriesList()
+        {
+            // Get the url of product castegories
+            var categoriesUlElement = driver.FindElement(By.ClassName("product-categories"));
+            // Get the categories Lists
+            var categoriesLi = categoriesUlElement.FindElements(By.TagName("li")).ToList();
+            return categoriesLi;
+        }
+        public void ClickOnCategory_VerifyBooksDisplayedOnPage(int index)
+        {
+            // Get the category List
+            var categoriesLi = GetProductCategoriesList();
+            // Get the specific category which you want to click
+            var category = categoriesLi[index].FindElement(By.TagName("a"));
+            // Get the anchor tag link to assert the navigation
+            var expectedUrl = category.GetAttribute("href");
+            // Get the Count of the books from Product category section
+            var countOfBooksText = categoriesLi[index].FindElement(By.ClassName("count")).Text;
+            var expectedCount = int.Parse(countOfBooksText.Replace("(", "").Replace(")", "").Trim());
+            testOutputHelper.WriteLine(expectedCount.ToString());
+            // Click on the category
+            category.Click();
+            // Get the url of the current page
+            var actualUrl = driver.Url;
+            // Assert the navigation after click on the category
+            Assert.Equal(expectedUrl, actualUrl);
+
+            // Assert the count of books
+            // Get the actual count of the books displayed on the page
+            var actualCount = driver.FindElement(By.ClassName("masonry-done")).
+                FindElements(By.TagName("li")).Count();
+            testOutputHelper.WriteLine(actualCount.ToString());
+            Assert.Equal(expectedCount, actualCount);
+        }
+        
     }
 }

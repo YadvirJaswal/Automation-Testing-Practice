@@ -611,6 +611,15 @@ namespace AutomationPracticeSiteProject
             // Assert the price of each book on the page
             shopPage.ValidatePricesOfBook_AfterFilter();
         }
+        [Fact]
+        public void Shop_ProductCategories_Functionality()
+        {
+            // Click on shop
+            commonFeatures.ClickShopMenu();
+
+            // Click on the category and verify that user can view only that particular product
+            shopPage.ClickOnCategory_VerifyBooksDisplayedOnPage(2);
+        }
 
     }
 }
