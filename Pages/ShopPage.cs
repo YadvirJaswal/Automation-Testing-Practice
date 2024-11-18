@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Bson;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
@@ -123,6 +124,77 @@ namespace AutomationPracticeSiteProject.Pages
             testOutputHelper.WriteLine(actualCount.ToString());
             Assert.Equal(expectedCount, actualCount);
         }
-        
+        public void SelectOption_Sorting_DropDown(string value)
+        {
+            // Locate sorting drop down
+            var dropDownElement = driver.FindElement(By.ClassName("orderby"));
+            // Using select element to select option from dropdown
+            var dropdown = new SelectElement(dropDownElement);
+            dropdown.SelectByValue(value);
+
+            // Re-locate the dropdown to avoid stale element
+            var refreshedDropDownElement = driver.FindElement(By.ClassName("orderby"));
+            var refreshedDropDown = new SelectElement(refreshedDropDownElement);
+           
+            // Assert the selected option
+            var actualOption = refreshedDropDown.SelectedOption.GetDomAttribute("value");
+            Assert.Equal(value, actualOption);
+        }
+        private List<IWebElement> GetListOfProducts()
+        {
+            // Locate the ul containing the lists of products
+            var productLists = driver.FindElement(By.ClassName("masonry-done"));
+            // Get all the li elements within the ul
+            var productItems = productLists.FindElements(By.TagName("li")).ToList();
+            return productItems;
+        }
+        private IWebElement GetProductPrices(IWebElement item)
+        {
+            
+            // Locate the price element within each li
+            var priceElement = item.FindElement(By.ClassName("woocommerce-Price-amount"));
+            return priceElement;
+        }
+        private List<double> GetListOfPrices(List<IWebElement> productItems)
+        {
+            // Extract prices from each li
+            List<double> prices = new List<double>();
+            foreach (var item in productItems)
+            {
+                var priceElement = GetProductPrices(item);
+                // Get Sale prices of books
+                var salePriceText = priceElement.FindElement(By.XPath("//*[@id=\"content\"]/ul/li/a[1]/span[2]/ins/span")).Text;
+
+                if (salePriceText != null)
+                {
+                    // Remove currency symbol and parse the price to a double
+                    var salePriceOfBook = double.Parse(salePriceText.Replace("₹", "").Trim());
+                    prices.Add(salePriceOfBook);
+                }
+                else
+                {
+                    // Remove currency symbol and parse the price to a double
+                    var price = double.Parse(priceElement.Text.Replace("₹", "").Trim());
+                    prices.Add(price);
+                }
+            }
+            return prices;
+        }
+        public void Validate_LowToHigh_Sorting_Functionality()
+        {
+
+            // Get all the li elements within the ul
+            var productItems = GetListOfProducts();
+
+            // Extract prices from each li
+            var prices = GetListOfPrices(productItems);
+
+            // Verify that the prices list is sorted in ascending order
+            List<double> sortedPrices = new List<double>(prices);
+            sortedPrices.Sort(); // Sort the copied list in ascending order
+            // Assert that the original list matches the sorted list
+            Assert.Equal(sortedPrices,prices);
+        }
+
     }
 }
