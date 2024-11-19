@@ -29,6 +29,7 @@ namespace AutomationPracticeSiteProject
             _testOutputHelper = testOutputHelper;
             driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://practice.automationtesting.in/");
+            driver.Manage().Window.Maximize();   
             homePage = new HomePage(driver);
             productPage = new ProductPage(driver, testOutputHelper);
             basketPage = new BasketPage(driver, _testOutputHelper);
@@ -326,7 +327,7 @@ namespace AutomationPracticeSiteProject
             homePage.VerifyNumberOfArrivalImages(expectedNumber);
 
             // Click the first image in the arrivals and click on add to basket button
-            homePage.ClickOnAddToBasketAndViewBasketOfFirstImageInArrivals();
+            homePage.ClickOnAddToBasketAndViewBasketOfBook();
 
             // Assert that total is greater than subtotal
             basketPage.VerifyTotalAlwaysGreaterThanSubTotal();
@@ -339,7 +340,7 @@ namespace AutomationPracticeSiteProject
             homePage.NavigateToHomePage();
 
             // Click the first image in the arrivals and click on add to basket button
-            homePage.ClickOnAddToBasketAndViewBasketOfFirstImageInArrivals();
+            homePage.ClickOnAddToBasketAndViewBasketOfBook();
 
             // Click on Checkout button
             basketPage.GetAndClickOnProceedToCheckoutButton();
@@ -357,7 +358,7 @@ namespace AutomationPracticeSiteProject
             homePage.NavigateToHomePage();
 
             // Click the first image in the arrivals and click on add to basket button
-            homePage.ClickOnAddToBasketAndViewBasketOfFirstImageInArrivals();
+            homePage.ClickOnAddToBasketAndViewBasketOfBook();
 
             // Click on Checkout button
             basketPage.GetAndClickOnProceedToCheckoutButton();
@@ -377,7 +378,7 @@ namespace AutomationPracticeSiteProject
             homePage.NavigateToHomePage();
 
             // Click the first image in the arrivals and click on add to basket button
-            homePage.ClickOnAddToBasketAndViewBasketOfFirstImageInArrivals();
+            homePage.ClickOnAddToBasketAndViewBasketOfBook();
 
             // Click on Checkout button
             basketPage.GetAndClickOnProceedToCheckoutButton();
@@ -394,7 +395,7 @@ namespace AutomationPracticeSiteProject
             homePage.NavigateToHomePage();
 
             // Click the first image in the arrivals and click on add to basket button
-            homePage.ClickOnAddToBasketAndViewBasketOfFirstImageInArrivals();
+            homePage.ClickOnAddToBasketAndViewBasketOfBook();
 
             // Click on Checkout button
             basketPage.GetAndClickOnProceedToCheckoutButton();
@@ -410,7 +411,7 @@ namespace AutomationPracticeSiteProject
             homePage.NavigateToHomePage();
 
             // Click the first image in the arrivals and click on add to basket button
-            homePage.ClickOnAddToBasketAndViewBasketOfFirstImageInArrivals();
+            homePage.ClickOnAddToBasketAndViewBasketOfBook();
 
             // Click on Checkout button
             basketPage.GetAndClickOnProceedToCheckoutButton();
@@ -426,7 +427,7 @@ namespace AutomationPracticeSiteProject
             homePage.NavigateToHomePage();
 
             // Click the first image in the arrivals and click on add to basket button
-            homePage.ClickOnAddToBasketAndViewBasketOfFirstImageInArrivals();
+            homePage.ClickOnAddToBasketAndViewBasketOfBook();
 
             // Click on Checkout button
             basketPage.GetAndClickOnProceedToCheckoutButton();
@@ -643,6 +644,21 @@ namespace AutomationPracticeSiteProject
 
             // Validate the products List on the webpage is displayed in descending order of price.
             shopPage.Validate_HighToLow_Sorting_Functionality();
+        }
+        [Theory]
+        [MemberData(nameof(CheckoutTestData.BillingDetailsDataMandatoryFields), MemberType = typeof(CheckoutTestData))]
+        public void Shop_PlaceOrder_Functionality(BillingDetails billingDetails)
+        {
+            // Click on shop
+            commonFeatures.ClickShopMenu();
+
+            shopPage.ClickOnAddToBasket_ViewBasket();
+
+            // Click on checkout button
+            basketPage.GetAndClickOnProceedToCheckoutButton();
+
+            // Place an order by filling all mandatory fields
+            checkOutPage.PlaceAnOrderByFillingOnlyMandatoryFields(billingDetails);
         }
 
     }

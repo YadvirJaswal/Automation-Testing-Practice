@@ -90,7 +90,7 @@ namespace AutomationPracticeSiteProject.Pages
             var anchorTags = divElement.FindElements(By.TagName("a")).ToList();
             return anchorTags;
         }      
-        private void ClickOnAddToBasketOfImageInArrival()
+        public void ClickOnAddToBasketOfBook()
         {
             // Locate the div Element and Get the all anchor tags from div
             var anchorTags = GetTheAnchorTagsForImageInArrivals();
@@ -102,10 +102,10 @@ namespace AutomationPracticeSiteProject.Pages
             lnkAddToBasket.Click();
         }
   
-        public void ClickOnAddToBasketAndViewBasketOfFirstImageInArrivals()
+        public void ClickOnAddToBasketAndViewBasketOfBook()
         {           
             // Click on Add To basket button of image in arrivals
-            ClickOnAddToBasketOfImageInArrival();
+            ClickOnAddToBasketOfBook();
 
            var firstImageDivId = "text-22-sub_row_1-0-2-0-0";
            var lnkViewBasketClassName = "added_to_cart";
