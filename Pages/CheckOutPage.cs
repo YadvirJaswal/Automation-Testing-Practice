@@ -94,6 +94,8 @@ namespace AutomationPracticeSiteProject.Pages
             additionalInformation.SendKeys(billingDetails.AdditionalInformation);
             //Locate and Select phone number
             var lnkCountryDropDown = driver.FindElement(By.Id("s2id_billing_country"));
+            // Use JavascriptExecutor to avoid element click intercepted exception
+            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", lnkPhone);
             lnkCountryDropDown.Click();
             var lnkCountrySearch = driver.FindElement(By.Id("s2id_autogen1_search"));
             lnkCountrySearch.SendKeys(billingDetails.Country + Keys.Enter);
@@ -113,6 +115,7 @@ namespace AutomationPracticeSiteProject.Pages
             {
                 // Select payment gateway
                 var lnkPaymentMethod = driver.FindElement(By.Id("payment_method_cod"));
+                ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", driver.FindElement(By.Id("payment")));
                 lnkPaymentMethod.Click();
             }
             var initiaPrice = basketPage.GetTotalPriceOfBook();

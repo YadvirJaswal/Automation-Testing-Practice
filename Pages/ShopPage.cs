@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,12 +17,14 @@ namespace AutomationPracticeSiteProject.Pages
         private IWebDriver driver;
         private WebDriverWait wait;
         private readonly ITestOutputHelper testOutputHelper;
+        private HomePage homePage;
 
         public ShopPage(IWebDriver driver, ITestOutputHelper testOutputHelper)
         {
             this.driver = driver;
             this.testOutputHelper = testOutputHelper;
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            homePage = new HomePage(driver);
         }
 
         public void MoveSliderLeft_VerifyPostion()
@@ -210,6 +213,32 @@ namespace AutomationPracticeSiteProject.Pages
             sortedPrices.Reverse();
             // Assert that the original list matches the sorted list
             Assert.Equal(sortedPrices, prices);
+        }
+        public void ClickOnAddToBasket_ViewBasket()
+        {
+            // Get the Lists of Books 
+            var productItem = GetListOfProducts();
+
+            // Get the List of Book to be added to basket
+            var bookLiElement = productItem[1];
+
+            // Get the anchor tag which contains Add to Basket button
+            var anchorTags = bookLiElement.FindElements(By.TagName("a"));
+
+            // Click on anchor tag which contains the add to basket button link
+            var lnkAddToBasket = anchorTags[1];
+
+           // Use JavascriptExecutor to avoid element click intercepted exception
+            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", bookLiElement);
+            lnkAddToBasket.Click();
+
+            // Get view basket button after click on add to basket button
+            var isViewButtonDisplayed =  wait.Until(d=> bookLiElement.FindElement(By.ClassName("added_to_cart")).Displayed);
+            if (isViewButtonDisplayed)
+            {
+                var lnkViewBasket = bookLiElement.FindElement(By.ClassName("added_to_cart"));
+                lnkViewBasket.Click();  
+            }
         }
     }
 }
