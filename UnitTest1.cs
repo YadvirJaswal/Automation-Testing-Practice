@@ -23,6 +23,7 @@ namespace AutomationPracticeSiteProject
         private RegistrationPage registrationPage;
         private ShopPage shopPage;
         private LoginPage loginPage;
+        private MyAccountPage myAccountPage;
         private readonly ITestOutputHelper _testOutputHelper;
         public UnitTest1(ITestOutputHelper testOutputHelper)
         {
@@ -38,6 +39,7 @@ namespace AutomationPracticeSiteProject
             registrationPage = new RegistrationPage(driver);
             loginPage = new LoginPage(driver);
             shopPage = new ShopPage(driver,_testOutputHelper);
+            myAccountPage = new MyAccountPage(driver);
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         }
 
@@ -659,6 +661,22 @@ namespace AutomationPracticeSiteProject
 
             // Place an order by filling all mandatory fields
             checkOutPage.PlaceAnOrderByFillingOnlyMandatoryFields(billingDetails);
+        }
+        [Theory]
+        [InlineData("sumit@gmail.com","Sumit@001")]
+        public void MyAccount_Dashboard_functionality(string userName,string password)
+        {
+            // Click on My Account option in the menu
+            commonFeatures.ClickMyAccountMenu();
+
+            // Enter And Submit Login form
+            loginPage.Enter_UserName_Password_ClickOnLogin(userName, password);
+
+            // Assert Navigation
+            registrationPage.ValidateNavigationToMyAccountPage();
+
+            // Click on dashboard
+            myAccountPage.ValidateDashboardFunctionality();
         }
 
     }
