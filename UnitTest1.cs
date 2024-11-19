@@ -644,6 +644,12 @@ namespace AutomationPracticeSiteProject
             // Validate the products List on the webpage is displayed in descending order of price.
             shopPage.Validate_HighToLow_Sorting_Functionality();
         }
-
+        [Fact]
+        public void Shop_Sale_Functionality()
+        {
+            // Click on shop
+            commonFeatures.ClickShopMenu();
+            shopPage.ValidateSalesFunctionality();
+        }
     }
 }

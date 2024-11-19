@@ -211,5 +211,29 @@ namespace AutomationPracticeSiteProject.Pages
             // Assert that the original list matches the sorted list
             Assert.Equal(sortedPrices, prices);
         }
+        public void ValidateSalesFunctionality()
+        {
+            // Get the list of products
+            var productItems = GetListOfProducts();
+
+            foreach(var item in productItems)
+            {
+                wait.Until(d => item.FindElement(By.ClassName("onsale")).Displayed);
+                var isOnSale = item.FindElement(By.ClassName("onsale"));
+                if (isOnSale != null)
+                {
+                    var oldPriceElement = isOnSale.FindElement(By.XPath("//*[@id=\"content\"]/ul/li/a[1]/span[2]/del/span"));
+                    Assert.True(oldPriceElement.Displayed, "Old price is not displayed for the sale product.");
+
+                    var oldPriceStyle = oldPriceElement.GetCssValue("text-decoration");
+                    testOutputHelper.WriteLine($"Old price text-decoration value: {oldPriceStyle}");
+                    //Assert.Contains("line-through", oldPriceStyle, StringComparison.OrdinalIgnoreCase);
+
+                    var actualPriceElement = isOnSale.FindElement(By.XPath("//*[@id=\"content\"]/ul/li/a[1]/span[2]/ins/span"));
+                    Assert.True(actualPriceElement.Displayed, "Actual (discounted) price is not displayed for the sale product.");
+                }
+            }
+
+        }
     }
 }
