@@ -24,13 +24,15 @@ namespace AutomationPracticeSiteProject
         private ShopPage shopPage;
         private LoginPage loginPage;
         private MyAccountPage myAccountPage;
+        private OrdersPage ordersPage;
+        private ViewOrderPage viewOrderPage;
         private readonly ITestOutputHelper _testOutputHelper;
         public UnitTest1(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
             driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://practice.automationtesting.in/");
-            driver.Manage().Window.Maximize();   
+            driver.Manage().Window.Maximize();
             homePage = new HomePage(driver);
             productPage = new ProductPage(driver, testOutputHelper);
             basketPage = new BasketPage(driver, _testOutputHelper);
@@ -38,8 +40,10 @@ namespace AutomationPracticeSiteProject
             checkOutPage = new CheckOutPage(driver);
             registrationPage = new RegistrationPage(driver);
             loginPage = new LoginPage(driver);
-            shopPage = new ShopPage(driver,_testOutputHelper);
+            shopPage = new ShopPage(driver, _testOutputHelper);
             myAccountPage = new MyAccountPage(driver);
+            ordersPage = new OrdersPage(driver);
+            viewOrderPage = new ViewOrderPage(driver);
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         }
 
@@ -567,7 +571,7 @@ namespace AutomationPracticeSiteProject
         }
         [Theory]
         [InlineData("SuMit@gmail.com", "suMit@001")]
-        public void ClickOnMyAccount_Login_CaseChangedUserName_Password_LoginMustFail(string userName,string password)
+        public void ClickOnMyAccount_Login_CaseChangedUserName_Password_LoginMustFail(string userName, string password)
         {
             // Click on My Account option in the menu
             commonFeatures.ClickMyAccountMenu();
@@ -610,7 +614,7 @@ namespace AutomationPracticeSiteProject
 
             // Click on Filter Button and assert prices after applying filter
             shopPage.ClickOnFilterButton_AssertPrices();
-            
+
             // Assert the price of each book on the page
             shopPage.ValidatePricesOfBook_AfterFilter();
         }
@@ -663,8 +667,8 @@ namespace AutomationPracticeSiteProject
             checkOutPage.PlaceAnOrderByFillingOnlyMandatoryFields(billingDetails);
         }
         [Theory]
-        [InlineData("sumit@gmail.com","Sumit@001")]
-        public void MyAccount_Dashboard_functionality(string userName,string password)
+        [InlineData("sumit@gmail.com", "Sumit@001")]
+        public void MyAccount_Dashboard_functionality(string userName, string password)
         {
             // Click on My Account option in the menu
             commonFeatures.ClickMyAccountMenu();
@@ -678,6 +682,56 @@ namespace AutomationPracticeSiteProject
             // Click on dashboard
             myAccountPage.ValidateDashboardFunctionality();
         }
+        [Theory]
+        [InlineData("sumit@gmail.com", "Sumit@001")]
+        public void MyAccount_Orders_functionality(string userName, string password)
+        {
+            // Click on My Account option in the menu
+            commonFeatures.ClickMyAccountMenu();
 
+            // Enter And Submit Login form
+            loginPage.Enter_UserName_Password_ClickOnLogin(userName, password);
+
+            // Click on orders option 
+            myAccountPage.ClickOnOrdersOption();
+
+            // Verify that user must view their orders on orders page
+            ordersPage.Verify_OrdersShouldDisplay();
+        }
+        [Theory]
+        [InlineData("sumit@gmail.com", "Sumit@001")]
+        public void OrdersPage_UserMustView_Order_Customer_BillingDetails(string userName, string password)
+        {
+            // Click on My Account option in the menu
+            commonFeatures.ClickMyAccountMenu();
+
+            // Enter And Submit Login form
+            loginPage.Enter_UserName_Password_ClickOnLogin(userName, password);
+
+            // Click on orders option 
+            myAccountPage.ClickOnOrdersOption();
+
+            // Click on view order button and Assert the navigation 
+            ordersPage.ClickOnViewOrder_AssertNavigation();
+
+            // Assert that the Order,Customer and Billing Details section is visible
+            viewOrderPage.Validate_PageContainsOrder_Customer_BillingDetails();
+        }
+        [Theory]
+        [InlineData("sumit@gmail.com", "Sumit@001")]
+        public void OrdersPage_UserMustView_OrderNumber_OrderDate_OrderStatus(string userName, string password)
+        {
+            // Click on My Account option in the menu
+            commonFeatures.ClickMyAccountMenu();
+
+            // Enter And Submit Login form
+            loginPage.Enter_UserName_Password_ClickOnLogin(userName, password);
+
+            // Click on orders option 
+            myAccountPage.ClickOnOrdersOption();
+
+            // Click on view order button and Assert the navigation 
+            ordersPage.ClickOnViewOrder_AssertDetails();
+        }
     }
 }

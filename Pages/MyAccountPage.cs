@@ -15,7 +15,7 @@ namespace AutomationPracticeSiteProject.Pages
             this.driver = driver;
         }
 
-        private List<IWebElement> GetMyAccountNavigations(int liIndex)
+        private IWebElement GetMyAccountNavigations(int liIndex)
         {
             // Get My Account naviagtion class element
             var myAccountNavigationsElement = driver.FindElement(By.ClassName("woocommerce-MyAccount-navigation"));
@@ -23,15 +23,15 @@ namespace AutomationPracticeSiteProject.Pages
             var optionsLists = myAccountNavigationsElement.FindElements(By.TagName("li")).ToList();
             var optionList = optionsLists[liIndex];
             // Get anchor tags which contains the link of option
-            var optionAnchorTags = optionList.FindElements(By.TagName("a")).ToList();
-            return optionAnchorTags;
+            var optionAnchorTag = optionList.FindElement(By.TagName("a"));
+            return optionAnchorTag;
         }
         public void ValidateDashboardFunctionality()
         {
-            var optionAnchorTags = GetMyAccountNavigations(0);
+            var optionAnchorTag = GetMyAccountNavigations(0);
 
             // Get and click on dashboard option
-            var lnkDashboard = optionAnchorTags[0];
+            var lnkDashboard = optionAnchorTag;
             lnkDashboard.Click();
 
             // Get the dashboard content
@@ -44,5 +44,14 @@ namespace AutomationPracticeSiteProject.Pages
             //Assert the text displayed on the dashboard
             Assert.Equal(expectedText, actualText);
         }
+        public void ClickOnOrdersOption()
+        {
+            var optionAnchorTag = GetMyAccountNavigations(1);
+
+            // Get and click on orders link
+            var lnkOrders = optionAnchorTag;
+            lnkOrders.Click();
+        }
+        
     }
 }
