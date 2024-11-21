@@ -92,7 +92,7 @@ namespace AutomationPracticeSiteProject.Pages
             //Locate and fill additional information
             var additionalInformation = driver.FindElement(By.Id("order_comments"));
             additionalInformation.SendKeys(billingDetails.AdditionalInformation);
-            //Locate and Select phone number
+            //Locate and Select country
             var lnkCountryDropDown = driver.FindElement(By.Id("s2id_billing_country"));
             // Use JavascriptExecutor to avoid element click intercepted exception
             ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", lnkPhone);

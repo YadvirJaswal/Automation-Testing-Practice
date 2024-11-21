@@ -26,6 +26,7 @@ namespace AutomationPracticeSiteProject
         private MyAccountPage myAccountPage;
         private OrdersPage ordersPage;
         private ViewOrderPage viewOrderPage;
+        private AddressesPage addressesPage;
         private readonly ITestOutputHelper _testOutputHelper;
         public UnitTest1(ITestOutputHelper testOutputHelper)
         {
@@ -44,6 +45,7 @@ namespace AutomationPracticeSiteProject
             myAccountPage = new MyAccountPage(driver);
             ordersPage = new OrdersPage(driver);
             viewOrderPage = new ViewOrderPage(driver);
+            addressesPage = new AddressesPage(driver);
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         }
 
@@ -732,6 +734,48 @@ namespace AutomationPracticeSiteProject
 
             // Click on view order button and Assert the navigation 
             ordersPage.ClickOnViewOrder_AssertDetails();
+        }
+        [Theory]
+        [InlineData("sumit@gmail.com", "Sumit@001")]
+        public void MyAccount_Addresses_UserMustViewBillingAddressAndShipAddress(string userName, string password)
+        {
+            // Click on My Account option in the menu
+            commonFeatures.ClickMyAccountMenu();
+
+            // Enter And Submit Login form
+            loginPage.Enter_UserName_Password_ClickOnLogin(userName, password);
+
+            // Click on Addresses option 
+            myAccountPage.ClickOnAddressesOption();
+
+            // Assert the navigation and details 
+            addressesPage.Validate_AddressPageDetails();
+        }
+        [Theory]
+       
+        [MemberData(nameof(CheckoutTestData.BillingDetailsDataMandatoryFields), MemberType = typeof(CheckoutTestData))]
+        public void MyAccount_Addresses_UserCanEditShippingAddress(BillingDetails billingDetails)
+        {
+            // Click on My Account option in the menu
+            commonFeatures.ClickMyAccountMenu();
+
+            // Enter And Submit Login form
+            loginPage.Enter_UserName_Password_ClickOnLogin("sumit@gmail.com", "Sumit@001");
+
+            // Click on Addresses option 
+            myAccountPage.ClickOnAddressesOption();
+
+            // Assert the navigation and details 
+            addressesPage.Validate_AddressPageDetails();
+
+            //Click on edit button
+            addressesPage.ClickOnEditButton();
+
+            //Enter details into shipping section
+            addressesPage.EnterShippingDetails(billingDetails);
+
+            // Assert navigation after change address
+            addressesPage.AssertNavigationAndMessage();
         }
     }
 }

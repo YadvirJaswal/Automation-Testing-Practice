@@ -52,6 +52,10 @@ namespace AutomationPracticeSiteProject.Pages
             var lnkOrders = optionAnchorTag;
             lnkOrders.Click();
         }
-        
+        public void ClickOnAddressesOption()
+        {
+            var optionAnchorTag = GetMyAccountNavigations(3);
+            optionAnchorTag.Click();
+        }
     }
 }
