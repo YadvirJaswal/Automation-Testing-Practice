@@ -62,5 +62,12 @@ namespace AutomationPracticeSiteProject.Pages
             var optionAnchorTag = GetMyAccountNavigations(4);
             optionAnchorTag.Click();
         }
+        public void ClickOnLogoutOption()
+        {
+            var optionAnchorTag = GetMyAccountNavigations(5);
+            optionAnchorTag.Click();
+
+            Assert.Contains("/my-account/", driver.Url);
+        }
     }
 }
