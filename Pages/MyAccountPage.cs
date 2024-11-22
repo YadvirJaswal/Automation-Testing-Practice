@@ -57,5 +57,10 @@ namespace AutomationPracticeSiteProject.Pages
             var optionAnchorTag = GetMyAccountNavigations(3);
             optionAnchorTag.Click();
         }
+        public void ClickOnAccountDetailsOption()
+        {
+            var optionAnchorTag = GetMyAccountNavigations(4);
+            optionAnchorTag.Click();
+        }
     }
 }
