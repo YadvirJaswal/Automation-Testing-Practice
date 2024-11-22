@@ -500,7 +500,7 @@ namespace AutomationPracticeSiteProject
             registrationPage.ValidateEmailErrorMessage();
         }
         [Theory]
-        [InlineData("sumit@gmail.com", "Sumit@001")]
+        [InlineData("sumit@gmail.com", "Sumit@003")]
         public void ClickOnMyAccount_LoginWithValidCredentials_UserMustSuccessfullyLogin(string userName, string password)
         {
             // Click on My Account option in the menu
@@ -587,7 +587,7 @@ namespace AutomationPracticeSiteProject
             loginPage.ValiadateErrorMessage_InvalidCredentials("Error: The password you entered for the username SuMit@gmail.com is incorrect. Lost your password?");
         }
         [Theory]
-        [InlineData("sumit@gmail.com", "Sumit@001")]
+        [InlineData("sumit@gmail.com", "Sumit@003")]
         public void ClickOnMyAccount_Login_Logout_PressBackButton_ShouldNotBeSignedIn(string userName, string password)
         {
             // Click on My Account option in the menu
@@ -671,7 +671,7 @@ namespace AutomationPracticeSiteProject
             checkOutPage.PlaceAnOrderByFillingOnlyMandatoryFields(billingDetails);
         }
         [Theory]
-        [InlineData("sumit@gmail.com", "Sumit@001")]
+        [InlineData("sumit@gmail.com", "Sumit@003")]
         public void MyAccount_Dashboard_functionality(string userName, string password)
         {
             // Click on My Account option in the menu
@@ -687,7 +687,7 @@ namespace AutomationPracticeSiteProject
             myAccountPage.ValidateDashboardFunctionality();
         }
         [Theory]
-        [InlineData("sumit@gmail.com", "Sumit@001")]
+        [InlineData("sumit@gmail.com", "Sumit@003")]
         public void MyAccount_Orders_functionality(string userName, string password)
         {
             // Click on My Account option in the menu
@@ -703,7 +703,7 @@ namespace AutomationPracticeSiteProject
             ordersPage.Verify_OrdersShouldDisplay();
         }
         [Theory]
-        [InlineData("sumit@gmail.com", "Sumit@001")]
+        [InlineData("sumit@gmail.com", "Sumit@003")]
         public void OrdersPage_UserMustView_Order_Customer_BillingDetails(string userName, string password)
         {
             // Click on My Account option in the menu
@@ -722,7 +722,7 @@ namespace AutomationPracticeSiteProject
             viewOrderPage.Validate_PageContainsOrder_Customer_BillingDetails();
         }
         [Theory]
-        [InlineData("sumit@gmail.com", "Sumit@001")]
+        [InlineData("sumit@gmail.com", "Sumit@003")]
         public void OrdersPage_UserMustView_OrderNumber_OrderDate_OrderStatus(string userName, string password)
         {
             // Click on My Account option in the menu
@@ -738,7 +738,7 @@ namespace AutomationPracticeSiteProject
             ordersPage.ClickOnViewOrder_AssertDetails();
         }
         [Theory]
-        [InlineData("sumit@gmail.com", "Sumit@001")]
+        [InlineData("sumit@gmail.com", "Sumit@003")]
         public void MyAccount_Addresses_UserMustViewBillingAddressAndShipAddress(string userName, string password)
         {
             // Click on My Account option in the menu
@@ -762,7 +762,7 @@ namespace AutomationPracticeSiteProject
             commonFeatures.ClickMyAccountMenu();
 
             // Enter And Submit Login form
-            loginPage.Enter_UserName_Password_ClickOnLogin("sumit@gmail.com", "Sumit@001");
+            loginPage.Enter_UserName_Password_ClickOnLogin("sumit@gmail.com", "Sumit@003");
 
             // Click on Addresses option 
             myAccountPage.ClickOnAddressesOption();
@@ -780,7 +780,7 @@ namespace AutomationPracticeSiteProject
             addressesPage.AssertNavigationAndMessage();
         }
         [Theory]
-        [InlineData("sumit@gmail.com", "Sumit@001")]
+        [InlineData("sumit@gmail.com", "Sumit@003")]
         public void MyAccount_AccountDetails_UserCanViewDetails_EditDetails(string userName, string password)
         {
             // Click on My Account option in the menu
@@ -832,6 +832,20 @@ namespace AutomationPracticeSiteProject
 
             // Assert Error Message
             loginPage.ValiadateErrorMessage_InvalidCredentials($"Error: The password you entered for the username {userName} is incorrect. Lost your password?");
+        }
+        [Theory]
+        [InlineData("sumit@gmail.com", "Sumit@003")]
+        public void ValidateLogoutFunctionality(string userName, string password)
+        {
+            // Click on My Account option in the menu
+            commonFeatures.ClickMyAccountMenu();
+
+            // Enter And Submit Login form
+            loginPage.Enter_UserName_Password_ClickOnLogin(userName, password);
+
+            // Click on logout button
+            myAccountPage.ClickOnLogoutOption();
+
         }
     }
 }
