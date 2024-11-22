@@ -27,6 +27,7 @@ namespace AutomationPracticeSiteProject
         private OrdersPage ordersPage;
         private ViewOrderPage viewOrderPage;
         private AddressesPage addressesPage;
+        private EditAccountDetails editAccountDetails;
         private readonly ITestOutputHelper _testOutputHelper;
         public UnitTest1(ITestOutputHelper testOutputHelper)
         {
@@ -46,6 +47,7 @@ namespace AutomationPracticeSiteProject
             ordersPage = new OrdersPage(driver);
             viewOrderPage = new ViewOrderPage(driver);
             addressesPage = new AddressesPage(driver);
+            editAccountDetails = new EditAccountDetails(driver);
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         }
 
@@ -776,6 +778,60 @@ namespace AutomationPracticeSiteProject
 
             // Assert navigation after change address
             addressesPage.AssertNavigationAndMessage();
+        }
+        [Theory]
+        [InlineData("sumit@gmail.com", "Sumit@001")]
+        public void MyAccount_AccountDetails_UserCanViewDetails_EditDetails(string userName, string password)
+        {
+            // Click on My Account option in the menu
+            commonFeatures.ClickMyAccountMenu();
+
+            // Enter And Submit Login form
+            loginPage.Enter_UserName_Password_ClickOnLogin(userName, password);
+
+            // Click on Account details option 
+            myAccountPage.ClickOnAccountDetailsOption();
+
+            // Assert navigation to account details page
+            editAccountDetails.AssertNavigation();
+
+            // Assert account details
+            editAccountDetails.AssertAccountDetails(userName);
+        }
+        [Theory]
+        [InlineData("sumit@gmail.com", "Sumit@002","Sumit@003")]
+        public void MyAccount_AccountDetails_UserCanChangePassword(string userName, string password,string newPassword)
+        {
+            // Click on My Account option in the menu
+            commonFeatures.ClickMyAccountMenu();
+
+            // Enter And Submit Login form
+            loginPage.Enter_UserName_Password_ClickOnLogin(userName, password);
+
+            // Click on Account details option 
+            myAccountPage.ClickOnAccountDetailsOption();
+
+            // Assert navigation to account details page
+            editAccountDetails.AssertNavigation();
+
+           // Change password
+           editAccountDetails.ChangeExistingPassword(password, newPassword);
+
+            // Assert success Message and navigation after changing password
+            editAccountDetails.AssertSuccessMessage();
+        }
+        [Theory]
+        [InlineData("sumit@gmail.com", "Sumit@002")]
+        public void LoginWithOldPassword_AfterChangingPassword(string userName, string password)
+        {
+            // Click on My Account option in the menu
+            commonFeatures.ClickMyAccountMenu();
+
+            // Enter And Submit Login form
+            loginPage.Enter_UserName_Password_ClickOnLogin(userName, password);
+
+            // Assert Error Message
+            loginPage.ValiadateErrorMessage_InvalidCredentials($"Error: The password you entered for the username {userName} is incorrect. Lost your password?");
         }
     }
 }
