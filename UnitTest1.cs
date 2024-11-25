@@ -11,7 +11,7 @@ using Xunit.Abstractions;
 
 namespace AutomationPracticeSiteProject
 {
-    public class UnitTest1
+    public class UnitTest1: IDisposable
     {
         private IWebDriver driver;
         private HomePage homePage;
@@ -846,6 +846,14 @@ namespace AutomationPracticeSiteProject
             // Click on logout button
             myAccountPage.ClickOnLogoutOption();
 
+        }
+
+        // Dispose method to clean up WebDriver
+        public void Dispose()
+        {
+            // Quit the WebDriver
+            driver.Quit();
+            driver.Dispose();
         }
     }
 }
